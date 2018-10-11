@@ -84,12 +84,20 @@ deckEl.addEventListener("click", respondToTheClick);
 function respondToTheClick(event) {
   if (event.target.nodeName == "LI") {
     const cardEl = event.target;
-    if (isCardDisplayed(cardEl)) {
+    // process card click only if card is hidden
+    // and if the open cards list is not full
+    if (isCardDisplayed(cardEl) || openCardsList.length >= 2) {
       return;
     }
     displayCard(cardEl);
     addCardToOpenCardsList(cardEl);
-    setTimeout(openOrHideCards, 1500);
+    if (openCardsList.length == 2) {
+      if (openCardsMatch()) {
+        openCardsInOpenCardsList();
+      } else {
+        setTimeout(hideCardsInOpenCardsList, 1000);
+      }
+    }
   }
 }
 
@@ -111,17 +119,6 @@ function openCard(cardEl) {
 
 // operations on the openCardsList
 
-function openOrHideCards() {
-  if (openCardsList.length == 2) {
-    if (openCardsMatch()) {
-      openCardsInOpenCardsList();
-    } else {
-      hideCardsInOpenCardsList();
-    }
-    removeCardsFromOpenCardsList();
-  }
-}
-
 function addCardToOpenCardsList(cardEl) {
   openCardsList.push(cardEl);
 }
@@ -131,16 +128,18 @@ function hideCardsInOpenCardsList() {
   openCardsList.forEach(cardEl => {
     hideCard(cardEl);
   });
-}
-
-function removeCardsFromOpenCardsList() {
-  openCardsList.splice(0, openCardsList.length);
+  removeCardsFromOpenCardsList();
 }
 
 function openCardsInOpenCardsList() {
   openCardsList.forEach(cardEl => {
     openCard(cardEl);
   });
+  removeCardsFromOpenCardsList();
+}
+
+function removeCardsFromOpenCardsList() {
+  openCardsList.splice(0, openCardsList.length);
 }
 
 function openCardsMatch() {
@@ -150,7 +149,7 @@ function openCardsMatch() {
   );
 }
 
-// operation on move counter
+// operations on move counter
 
 function incrementMoves() {
   moveCounter += 1;
