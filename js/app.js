@@ -155,5 +155,3 @@ function openCardsMatch() {
 function incrementMoves() {
   moveCounter += 1;
 }
-
-function()
