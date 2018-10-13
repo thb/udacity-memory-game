@@ -1,0 +1,13 @@
+.congrats {
+  margin-top: 15px;
+  text-align: center;
+}
+.startagain {
+  margin-top: 15px;
+  color: white;
+  font-size: 18px;
+  text-transform: uppercase;
+  padding: 5px 15px;
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  border-radius: 5px;
+}

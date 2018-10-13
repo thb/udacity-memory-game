@@ -196,6 +196,10 @@ function refreshMovesCount() {
 // restart functionnality
 
 function respondToRestartClick() {
+  restart();
+}
+
+function restart() {
   resetGrid();
   resetMovesCounter();
 }
@@ -233,12 +237,36 @@ function resetMovesCounter() {
 function checkAllCardsOpen() {
   const nopen = document.querySelectorAll(".open").length;
   if (nopen === CARD_TYPES.length * 2) {
-    console.log("congrats");
+    showCongratsScreen();
   }
 }
 
 function showCongratsScreen() {
-  console.log("show congrats screen...");
+  const deckEl = document.querySelector(".deck");
+  const congratsEl = document.querySelector(".congrats");
+  const nmovesEl = document.querySelector(".nmoves");
+  const nstarsEl = document.querySelector(".nstars");
+
+  nmovesEl.innerText = movesCounter;
+  nstarsEl.innerText = document.querySelector(".stars").children.length;
+
+  // toggle displays
+  deckEl.style.display = "none";
+  congratsEl.style.display = "block";
+
+  const startAgainBtn = document.querySelector(".startagain");
+  startAgainBtn.addEventListener("click", respondToStartAgainBtnClick);
+}
+
+function respondToStartAgainBtnClick() {
+  console.log("start again click");
+  const deckEl = document.querySelector(".deck");
+  deckEl.style.display = "flex";
+
+  const congratsEl = document.querySelector(".congrats");
+  congratsEl.style.display = "none";
+
+  restart();
 }
 
 // utility methods
