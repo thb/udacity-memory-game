@@ -1,3 +1,5 @@
+// variables
+
 const CARD_TYPES = [
   "diamond",
   "paper-plane-o",
@@ -9,14 +11,18 @@ const CARD_TYPES = [
   "bomb"
 ];
 
-const deckArray = buildDeckArray();
+const deckOfCards = buildDeckArray();
 
 const openCardsList = [];
+
+let movesCount = 0;
+
+// main function
 
 function start() {
   const deckEl = document.querySelector(".deck");
   deckEl.addEventListener("click", respondToTheClick);
-  displayDeck(deckArray);
+  displayAllCardsOfDeck(deckOfCards);
 }
 
 // operations on deck
@@ -41,7 +47,7 @@ function buildDeckArray() {
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-function displayDeck(deckArray) {
+function displayAllCardsOfDeck(deckArray) {
   const deckEl = document.querySelector(".deck");
   deckArray.forEach(card => {
     const cardEl = document.createElement("li");
