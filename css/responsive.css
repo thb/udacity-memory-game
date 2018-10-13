@@ -11,3 +11,15 @@
   background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
   border-radius: 5px;
 }
+
+@media screen and (max-width: 660px) {
+  .deck {
+    width: 440px;
+    padding: 24px;
+    min-height: 480px;
+  }
+  .deck .card {
+    height: 80px;
+    width: 80px;
+  }
+}
