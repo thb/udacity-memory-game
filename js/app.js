@@ -11,18 +11,28 @@ const CARD_TYPES = [
   "bomb"
 ];
 
-const deckOfCards = buildDeckArray();
+let deckOfCards = buildDeckArray();
 
-const openCardsList = [];
+let openCardsList = [];
 
-let movesCount = 0;
+let movesCounter = 0;
+
+const TWO_STARS_THRESHOLD = 15;
+const ONE_STARS_THRESHOLD = 25;
 
 // main function
 
 function start() {
+  // respond to card click
   const deckEl = document.querySelector(".deck");
   deckEl.addEventListener("click", respondToTheClick);
+
+  // display all cards of the deck
   displayAllCardsOfDeck(deckOfCards);
+
+  // respond to restart click
+  const restartEl = document.querySelector(".restart");
+  restartEl.addEventListener("click", respondToRestartClick);
 }
 
 // operations on deck
@@ -92,6 +102,9 @@ function respondToTheClick(event) {
         setTimeout(hideCardsInOpenCardsList, 1000);
       }
       incrementMoves();
+      if (checkAllCardsOpen()) {
+        showCongratsScreen();
+      }
     }
   }
 }
@@ -156,50 +169,77 @@ function openCardsMatch() {
 // operations on moves counter
 
 function incrementMoves() {
-  addAStar();
-  displayMovesCount();
+  movesCounter++;
+  refreshMovesCount();
+  checkRemoveStar();
 }
 
-function addAStar() {
-  const ulEl = document.querySelector(".stars");
-  const liEl = document.createElement("li");
-  const iEl = document.createElement("i");
-  iEl.classList.add("fa", "fa-star");
-  liEl.appendChild(iEl);
-  ulEl.appendChild(liEl);
-}
+// 3 stars : less than 10 moves
+// 2 stars : less than 20 moves
+// 1 star : 20 moves and above
 
-function displayMovesCount() {
+function checkRemoveStar() {
   const ulEl = document.querySelector(".stars");
-  const count = ulEl.childElementCount;
-  const spanEl = document.querySelector(".moves");
-  spanEl.innerText = count;
-}
-
-function resetMovesCounter() {
-  const ulEl = document.querySelector(".stars");
-  while (ulEl.firstChild) {
-    ulEl.removeChild(ulEl.firstChild);
+  if (
+    movesCounter == TWO_STARS_THRESHOLD ||
+    movesCounter == ONE_STARS_THRESHOLD
+  ) {
+    ulEl.children[0].remove();
   }
-  displayMovesCount();
+}
+
+function refreshMovesCount() {
+  const movesEl = document.querySelector(".moves");
+  movesEl.innerText = movesCounter;
 }
 
 // restart functionnality
 
-function restart() {
-  const restartEl = document.querySelector(".restart");
-  restartEl.addEventListener("click", respondToRestartClick);
-  console.log("restart click");
+function respondToRestartClick() {
+  resetGrid();
+  resetMovesCounter();
 }
 
-function respondToRestartClick() {
-  resetMovesCounter();
-  resetGrid();
+function resetGrid() {
+  deckOfCards = buildDeckArray();
+  openCardsList = [];
+  const deckEl = document.querySelector(".deck");
+  while (deckEl.children[0]) {
+    deckEl.children[0].remove();
+  }
+  displayAllCardsOfDeck(deckOfCards);
+}
+
+function resetMovesCounter() {
+  movesCounter = 0;
+  refreshMovesCount();
+  const ulEl = document.querySelector(".stars");
+  // remove all the stars
+  while (ulEl.children[0]) {
+    ulEl.children[0].remove();
+  }
+  // recreate 3 stars
+  for (i = 1; i <= 3; i++) {
+    const liEl = document.createElement("li");
+    const iEl = document.createElement("i");
+    iEl.classList.add("fa", "fa-star");
+    liEl.appendChild(iEl);
+    ulEl.appendChild(liEl);
+  }
 }
 
 // win the game
 
-function AllCardsMatch() {}
+function checkAllCardsOpen() {
+  const nopen = document.querySelectorAll(".open").length;
+  if (nopen === CARD_TYPES.length * 2) {
+    console.log("congrats");
+  }
+}
+
+function showCongratsScreen() {
+  console.log("show congrats screen...");
+}
 
 // utility methods
 
