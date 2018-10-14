@@ -37,7 +37,7 @@ function start() {
 
   // listen to card click (event delegation)
   const deckEl = document.querySelector(".deck");
-  deckEl.addEventListener("click", respondToTheClick);
+  deckEl.addEventListener("click", respondToCardClick);
 
   // listen to restart click
   const restartEl = document.querySelector(".restart");
@@ -92,7 +92,7 @@ function displayAllCardsOfDeck(deckArray) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-function respondToTheClick(event) {
+function respondToCardClick(event) {
   if (event.target.nodeName == "LI") {
     const cardEl = event.target;
     // do nothing if
@@ -214,6 +214,7 @@ function respondToRestartClick() {
 
 function restart() {
   removeCardsFromGrid();
+  displayZeroToNbMoves();
   rebuildThreeStars();
   displayZeroToTimer();
   start();
@@ -224,6 +225,11 @@ function removeCardsFromGrid() {
   while (deckEl.children[0]) {
     deckEl.children[0].remove();
   }
+}
+
+function displayZeroToNbMoves() {
+  const movesEl = document.querySelector(".moves");
+  movesEl.innerText = 0;
 }
 
 // removes remaining stars
