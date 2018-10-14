@@ -2,19 +2,19 @@
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+- [Instructions](#instructions)
+- [Contributing](#contributing)
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+Memory Game is a memory game where you need to match pairs of cards. Playing is very simple - you turn over one card and then try to find a matching card.
 
-To get started, open `js/app.js` and start building out the app's functionality
+If you find all matching pairs in less than 15 moves, you get 3 stars. If you find all matching pairs in 15 moves or more but less than 25 moves, you get 2 stars. Else you get 1 star.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+Try to find in the fastest time and less moves that you can !
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+This repository is built from the starter code of the Memory Game Project of Udacity Front End nano degree. It is my solution. Therefore, I will most likely not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
