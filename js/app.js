@@ -15,7 +15,12 @@ const ONE_STARS_THRESHOLD = 25;
 
 // game variables
 
-let deckOfCards, openCardsList, movesCounter, timerInSeconds, runTimer;
+let deckOfCards,
+  openCardsList,
+  movesCounter,
+  timerInSeconds,
+  runTimer,
+  timerIntervalId;
 
 // main function
 
@@ -39,7 +44,8 @@ function start() {
   restartEl.addEventListener("click", respondToRestartClick);
 
   // update timer
-  setInterval(updateTimer, 1000);
+  clearInterval(timerIntervalId);
+  timerIntervalId = setInterval(updateTimer, 1000);
 }
 
 // operations on deck
@@ -269,7 +275,6 @@ function showCongratsScreen() {
 }
 
 function respondToStartAgainBtnClick() {
-  console.log("start again click");
   const deckEl = document.querySelector(".deck");
   deckEl.style.display = "flex";
 
