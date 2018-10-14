@@ -12,6 +12,10 @@
   border-radius: 5px;
 }
 
+.timer {
+  margin-left: 55px;
+}
+
 @media screen and (max-width: 660px) {
   .deck {
     width: 440px;

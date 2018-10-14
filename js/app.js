@@ -1,4 +1,4 @@
-// variables
+// constants
 
 const CARD_TYPES = [
   "diamond",
@@ -10,29 +10,36 @@ const CARD_TYPES = [
   "bicycle",
   "bomb"
 ];
-
-let deckOfCards = buildDeckArray();
-
-let openCardsList = [];
-
-let movesCounter = 0;
-
 const TWO_STARS_THRESHOLD = 15;
 const ONE_STARS_THRESHOLD = 25;
+
+// game variables
+
+let deckOfCards, openCardsList, movesCounter, timerInSeconds, runTimer;
 
 // main function
 
 function start() {
-  // respond to card click
-  const deckEl = document.querySelector(".deck");
-  deckEl.addEventListener("click", respondToTheClick);
+  // init game variables
+  deckOfCards = buildDeckArray();
+  openCardsList = [];
+  movesCounter = 0;
+  timerInSeconds = 0;
+  runTimer = true;
 
   // display all cards of the deck
   displayAllCardsOfDeck(deckOfCards);
 
-  // respond to restart click
+  // listen to card click (event delegation)
+  const deckEl = document.querySelector(".deck");
+  deckEl.addEventListener("click", respondToTheClick);
+
+  // listen to restart click
   const restartEl = document.querySelector(".restart");
   restartEl.addEventListener("click", respondToRestartClick);
+
+  // update timer
+  setInterval(updateTimer, 1000);
 }
 
 // operations on deck
@@ -200,36 +207,37 @@ function respondToRestartClick() {
 }
 
 function restart() {
-  resetGrid();
-  resetMovesCounter();
+  removeCardsFromGrid();
+  rebuildThreeStars();
+  displayZeroToTimer();
+  start();
 }
 
-function resetGrid() {
-  deckOfCards = buildDeckArray();
-  openCardsList = [];
+function removeCardsFromGrid() {
   const deckEl = document.querySelector(".deck");
   while (deckEl.children[0]) {
     deckEl.children[0].remove();
   }
-  displayAllCardsOfDeck(deckOfCards);
 }
 
-function resetMovesCounter() {
-  movesCounter = 0;
-  refreshMovesCount();
+// removes remaining stars
+function rebuildThreeStars() {
   const ulEl = document.querySelector(".stars");
-  // remove all the stars
-  while (ulEl.children[0]) {
-    ulEl.children[0].remove();
-  }
-  // recreate 3 stars
-  for (i = 1; i <= 3; i++) {
+  // count remaining stars
+  const remainingStarsCount = ulEl.children.length;
+  // recreate stars to have 3 stars back
+  for (i = 1; i <= 3 - remainingStarsCount; i++) {
     const liEl = document.createElement("li");
     const iEl = document.createElement("i");
     iEl.classList.add("fa", "fa-star");
     liEl.appendChild(iEl);
     ulEl.appendChild(liEl);
   }
+}
+
+function displayZeroToTimer() {
+  const timerEl = document.querySelector(".timer");
+  timerEl.innerText = "00:00";
 }
 
 // win the game
@@ -242,14 +250,16 @@ function checkAllCardsOpen() {
 }
 
 function showCongratsScreen() {
+  runTimer = false;
   const deckEl = document.querySelector(".deck");
   const congratsEl = document.querySelector(".congrats");
   const nmovesEl = document.querySelector(".nmoves");
   const nstarsEl = document.querySelector(".nstars");
+  const timeEl = document.querySelector(".time");
 
   nmovesEl.innerText = movesCounter;
   nstarsEl.innerText = document.querySelector(".stars").children.length;
-
+  timeEl.innerText = document.querySelector(".timer").innerText;
   // toggle displays
   deckEl.style.display = "none";
   congratsEl.style.display = "block";
@@ -267,6 +277,20 @@ function respondToStartAgainBtnClick() {
   congratsEl.style.display = "none";
 
   restart();
+}
+
+// timer
+
+function updateTimer() {
+  if (runTimer) {
+    timerInSeconds++;
+    let minutes = Math.floor(timerInSeconds / 60);
+    let seconds = timerInSeconds % 60;
+    let formattedMinutes = ("0" + minutes).slice(-2);
+    let formattedSeconds = ("0" + seconds).slice(-2);
+    timerEl = document.querySelector(".timer");
+    timerEl.innerText = `${formattedMinutes}:${formattedSeconds}`;
+  }
 }
 
 // utility methods
